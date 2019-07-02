@@ -13,7 +13,7 @@
 	<%	request.setCharacterEncoding("utf-8"); %>
 	
 	<%	
-		String id = request.getParameter("id");
+		String id = (String)session.getAttribute("id");
 		String pwd = request.getParameter("pwd");
 		
 		//debug
@@ -32,7 +32,7 @@
 			Class.forName("org.gjt.mm.mysql.Driver");
 			
 			conn = DriverManager.getConnection(jdbcUrl, dbId, dbPass);
-			String sql = "SELECT id, pwd FROM tblregister WHERE id = ?";
+			String sql = "SELECT pwd FROM tblregister WHERE id = ?";
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setString(1, id);
@@ -40,21 +40,22 @@
 			rs = pstmt.executeQuery();
 			
 			if (rs.next()) {
-				String rId = rs.getString("id");
 				String rPwd = rs.getString("pwd");
 				
 				//Debug
-				System.out.println(rId + "\t" + rPwd);
+				System.out.println(rPwd);
 				
-				if (id.equals(rId) && pwd.equals(rPwd)) {
-					str = rId + " 로긴 완료입니다.";
-
-					session.setAttribute("id", id);
-					session.setAttribute("pwd", pwd);
+				if (pwd.equals(rPwd)) {
+					sql = "DELETE FROM tblregister WHERE pwd = ?";
+					pstmt = conn.prepareStatement(sql);
+					pstmt.setString(1, pwd);
 					
-					rs.close();
+					pstmt.executeUpdate();
+					
+					
+					str = "회원 탈퇴 완료입니다.";
 				} else {
-					System.out.println("잘못 입력하셨습니다.");
+					System.out.println("회원 탈퇴 실패입니다.");
 				}
 				
 			}
@@ -76,19 +77,9 @@
 		}
 		
 	%>
+	
 	<div align="center">
-	
-	<%=	str %>
-	
-	
-	<form method="post" action="update_2417.jsp">
-		<input type="submit" value="회원정보수정">
-	</form>
-	<p/>
-	<form method="post" action="delete_2417.jsp">
-		<input type="submit" value="회원 탈퇴">
-	</form>
-	
+		<%=	str %>
 	</div>
 </body>
 </html>

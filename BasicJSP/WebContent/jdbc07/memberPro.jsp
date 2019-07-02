@@ -1,20 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+	<%@	page import = "java.util.*" %>
+	<%@	page import = "java.sql.*" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
-<body bgcolor="#ffffcc">
-	<%@	page import = "java.util.*" %>
-	<%@	page import = "java.sql.*" %>
-	
-	<%	
-		request.setCharacterEncoding("UTF-8");
-	%>
-	
-	<% 
+<body>
+	<%	request.setCharacterEncoding("utf-8"); %>
+
+	<%
 		String id = request.getParameter("id");
 		String pwd = request.getParameter("pwd");
 		String name = request.getParameter("name");
@@ -23,25 +21,24 @@
 		String email = request.getParameter("email");
 		String phone = request.getParameter("phone");
 		String zipcode = request.getParameter("zipcode");
-		String address = request.getParameter("address");
+		String addr = request.getParameter("addr");
 		String job = request.getParameter("job");
 		
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		
 		String str = "";
+		String s = "";
+		
 		try {
 			String jdbcUrl = "jdbc:mysql://localhost:3306/mydb";
 			String dbId = "root";
 			String dbPass = "mirim2";
 			
 			Class.forName("org.gjt.mm.mysql.Driver");
-			
 			conn = DriverManager.getConnection(jdbcUrl, dbId, dbPass);
-			String sql = "INSERT INTO tblRegister(id, pwd, name, num1, num2, email, phone, zipcode, address, job) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-			pstmt = conn.prepareStatement(sql);
 			
+			String sql = "INSERT INTO tblregister(id, pwd, name, num1, num2, email, phone, zipcode, address, job) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, id);
 			pstmt.setString(2, pwd);
 			pstmt.setString(3, name);
@@ -50,49 +47,35 @@
 			pstmt.setString(6, email);
 			pstmt.setString(7, phone);
 			pstmt.setString(8, zipcode);
-			pstmt.setString(9, address);
+			pstmt.setString(9, addr);
 			pstmt.setString(10, job);
 			
-			rs = pstmt.executeQuery();
-			
-			if (rs.next()) {
-				String rId = rs.getString("id");
-				
-				System.out.println(rId);
-				
-				if (id.equals(rId)) {
-					System.out.println("중복된 아이디입니다.");
-				} else {
-					
-					str = "회원가입 완료되었습니다.";
-					
+			str = "회원가입 완료했습니다.";
+			s = "success";
+		} catch(Exception e) {
+			e.printStackTrace();
+			str = "회원가입 실패했습니다.";
+			s = "fail";
+		} finally {
+			if (pstmt != null)
+				try {	pstmt.close();
+				} catch(SQLException sqle) {}
+			if (conn != null)
+				try {	pstmt.close();
+				} catch(SQLException sqle) {}
+		}
+		
 	%>
 	
 	<%=	str %>
-	
-	<p/>
-	<input type="button" value="로긴하기" onclick="location.href='login_2417.jsp'">
-
-	<% 	
-				}
-			}	
-			
-		} catch(Exception e) {
-			str = "Error Occurs.";
-			e.printStackTrace();
-		} finally {
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException sqle) {}
-			}
-			if (conn != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException sqle) {}
-			}
+	<%	
+		if(s.equals("success")) {
+	%>
+			<form method="post" action="login.jsp">
+				<input type="submit" value="로긴">
+			</form>
+	<% 
 		}
-		
 	%>
 
 </body>
