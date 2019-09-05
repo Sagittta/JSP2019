@@ -5,6 +5,10 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
+<script lang="javascript">
+</script>
+
 </head>
 <body bgcolor="#ffffcc">
 	<%@	page import = "java.util.*" %>
@@ -39,6 +43,7 @@
 			Class.forName("org.gjt.mm.mysql.Driver");
 			
 			conn = DriverManager.getConnection(jdbcUrl, dbId, dbPass);
+			
 			String sql = "INSERT INTO tblRegister(id, pwd, name, num1, num2, email, phone, zipcode, address, job) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			pstmt = conn.prepareStatement(sql);
 			
@@ -54,7 +59,7 @@
 			pstmt.setString(10, job);
 			
 			rs = pstmt.executeQuery();
-			
+				
 			if (rs.next()) {
 				String rId = rs.getString("id");
 				
@@ -63,21 +68,10 @@
 				if (id.equals(rId)) {
 					System.out.println("중복된 아이디입니다.");
 				} else {
-					
 					str = "회원가입 완료되었습니다.";
-					
-	%>
-	
-	<%=	str %>
-	
-	<p/>
-	<input type="button" value="로긴하기" onclick="location.href='login_2417.jsp'">
-
-	<% 	
 				}
-			}	
-			
-		} catch(Exception e) {
+			}
+		}catch(Exception e) {
 			str = "Error Occurs.";
 			e.printStackTrace();
 		} finally {
@@ -92,8 +86,13 @@
 				} catch (SQLException sqle) {}
 			}
 		}
-		
+					
 	%>
+	
+	<%=	str %>
+	
+	<p/>
+	<input type="button" value="로긴하기" onclick="location.href='login_2417.jsp'">
 
 </body>
 </html>

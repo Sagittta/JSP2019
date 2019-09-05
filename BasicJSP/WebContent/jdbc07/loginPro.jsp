@@ -8,6 +8,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
 </head>
 <body bgcolor="#ffffcc">
 
@@ -45,6 +46,10 @@
 					<br>
 					<form method="post" action="update.jsp">
 						<input type="submit" value="회원정보수정">&nbsp;
+					</form>
+					<p/>
+					<form method="post" action="delete.jsp">
+						<input type="submit" value="회원탈퇴">
 					</form>
 	<% 		
 				} else

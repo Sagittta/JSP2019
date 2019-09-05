@@ -4,10 +4,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Login</title>
 </head>
 <body bgcolor="#ffffcc">
-<center>
+<div align="center">
 	<h3>로그인</h3>
 	
 	<form method = "post" action="loginPro_2417.jsp">
@@ -16,6 +16,6 @@
 		<input type="submit" value="로그인">
 	</form>
 	<input type="button" value="회원가입" onclick="location.href='member_2417.jsp'">
-</center>
+</div>
 </body>
 </html>
